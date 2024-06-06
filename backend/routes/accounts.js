@@ -5,11 +5,6 @@ const router = express.Router();
 const {Account} = require("../db");
 const authMiddleware = require("../middleware")
 
-const transferSchema = zod.object({
-    to: zod.string(),
-    amount: zod.number()
-})
-
 //route for getting personal balance
 router.get("/balance", authMiddleware, async (req, res)=>{
     const account = await Account.findOne({
@@ -22,13 +17,6 @@ router.get("/balance", authMiddleware, async (req, res)=>{
 })
 
 router.post("/transfer", authMiddleware, async (req, res)=>{
-    const {success} = transferSchema.safeParse(req.body)
-    if(!success){
-        return res.status(411).json({
-            message: "Invalid Inputs"
-        })
-    }
-
     const session = await mongoose.startSession();
 
     session.startTransaction();
