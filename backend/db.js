@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 //connect to mongo db
-mongoose.connect('mongodb+srv://admin:SlUNZRixpfdzcxSx@cluster0.q5fvoz9.mongodb.net/paytm-app');
+mongoose.connect('mongodb://localhost:27017/paytm-app');
 console.log('mongodb connected')
 
 const userSchema = new mongoose.Schema({
