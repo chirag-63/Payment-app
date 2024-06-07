@@ -1,11 +1,17 @@
 import { Appbar } from "../components/Appbar"
-import { Button } from "../components/Button"
-import { Heading } from "../components/Heading"
-import { InputBox } from "../components/InputBox"
+import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
 
 const allowedKeycodes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Backspace']
 
 export default function SendMoney() {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const id = searchParams.get("id");
+    const fname = searchParams.get("fName")
+    const lname = searchParams.get("lName")
+    const [amount, setAmount] = useState(0);
+    const Navigate = useNavigate();
 
     const handleKeyDown = (event) => {
         if (!allowedKeycodes.includes(event.key)) {
@@ -25,9 +31,9 @@ export default function SendMoney() {
                         <div className="p-6">
                             <div className="flex items-center space-x-4">
                                 <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
-                                    <span className="text-2xl text-white">A</span>
+                                    <span className="text-2xl text-white select-none">{fname[0].toUpperCase()}</span>
                                 </div>
-                                <h3 className="text-2xl font-semibold">Friend's Name</h3>
+                                <h3 className="text-2xl font-semibold">{fname} {lname}</h3>
                             </div>
                             <div className="space-y-4 mt-6">
                                 <div className="space-y-2">
@@ -36,14 +42,27 @@ export default function SendMoney() {
                                         Amount (in Rs)
                                     </label>
                                     <input
+                                        onChange={e => {
+                                            setAmount(e.target.value)
+                                        }}
                                         type="tel"
-                                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-lg font-serif outline-none"
+                                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-lg font-serif outline-none select-none"
                                         id="amount"
                                         placeholder="Enter amount"
                                         onKeyDown={handleKeyDown}
                                     />
                                 </div>
-                                <button className="justify-center rounded-md text-base font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white active:bg-green-700 select-none">
+                                <button onClick={()=>{
+                                    axios.post("http://localhost:3000/api/v1/account/transfer", {
+                                        to: id,
+                                        amount
+                                    }, {
+                                        headers: {
+                                            Authorization: "Bearer "+localStorage.getItem("token")
+                                        }
+                                    })
+                                    Navigate("/done")
+                                }} className="justify-center rounded-md text-base font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white active:bg-green-700 select-none">
                                     Initiate Transfer
                                 </button>
                             </div>
@@ -53,5 +72,4 @@ export default function SendMoney() {
             </div>
         </div>
     )
-
 }

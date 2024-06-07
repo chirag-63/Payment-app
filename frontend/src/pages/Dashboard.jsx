@@ -7,7 +7,7 @@ export default function Dashboard() {
         <div>
             <Appbar />
             <div>
-                <Balance balance={"1000"} />
+                <Balance />
                 <Users />
             </div>
         </div>
