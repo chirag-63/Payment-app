@@ -55,7 +55,7 @@ router.post("/signup", async (req, res) => {
     //assign a random dummy balance to user
     await Account.create({
         userId,
-        balance: 1 + Math.random()*10000
+        balance: 1 + Math.random() * 10000
     })
 
     //jwt sign
@@ -72,11 +72,11 @@ router.post("/signup", async (req, res) => {
 })
 
 //user signin route
-router.post("/signin", async(req, res) => {
+router.post("/signin", async (req, res) => {
     const body = req.body
-    const {success} = signinSchema.safeParse(body)
+    const { success } = signinSchema.safeParse(body)
 
-    if(!success){
+    if (!success) {
         return res.status(411).json({
             message: "Invalid inputs"
         })
@@ -87,7 +87,7 @@ router.post("/signin", async(req, res) => {
         password: body.password
     })
 
-    if(!existingUser || existingUser.password !== body.password){
+    if (!existingUser || existingUser.password !== body.password) {
         res.status(411).json({
             message: "Invalid username or password"
         })
@@ -104,11 +104,11 @@ router.post("/signin", async(req, res) => {
 })
 
 //user update route
-router.put("/", authMiddleware, async (req, res)=>{
+router.put("/", authMiddleware, async (req, res) => {
     const body = req.body;
-    const {success} = updateSchema.safeParse(body)
+    const { success } = updateSchema.safeParse(body)
 
-    if(!success){
+    if (!success) {
         return res.status(411).json({
             message: "Error while updating information"
         })
@@ -124,19 +124,22 @@ router.put("/", authMiddleware, async (req, res)=>{
 })
 
 //for searching a user via substring
-router.get("/bulk", async (req, res) => {
+router.get("/bulk", authMiddleware, async (req, res) => {
     const filter = req.query.filter || "";
+    const signedInUser = req.userId;
 
     const users = await User.find({
-        $or: [{
-            firstName: {
-                "$regex": filter
+        _id: { $ne: signedInUser }, // Exclude the current user
+        $and: [
+            {
+                $or: [
+                    { firstName: { $regex: filter } },
+                    { lastName: { $regex: filter } },
+                ],
+            }, {
+                _id: { $ne: signedInUser }
             }
-        }, {
-            lastName: {
-                "$regex": filter
-            }
-        }]
+        ]
     })
 
     res.json({
@@ -149,7 +152,7 @@ router.get("/bulk", async (req, res) => {
     })
 })
 
-router.get("/userinfo", authMiddleware, async (req, res)=>{
+router.get("/userinfo", authMiddleware, async (req, res) => {
 
     const user = await User.findOne({
         _id: req.userId
