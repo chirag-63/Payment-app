@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const { JWT_SECRET, DATABASE_URL } = require('./config');
 
 //connect to mongo db
-mongoose.connect('mongodb://localhost:27017/paytm-app');
+mongoose.connect(DATABASE_URL);
 console.log('mongodb connected')
 
 const userSchema = new mongoose.Schema({
