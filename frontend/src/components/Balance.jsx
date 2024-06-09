@@ -12,7 +12,7 @@ export function Balance() {
         setLoading(true);
         setShowText(false); // Hide the text after clicking
         setShowLoader(true); // Show loader
-        axios.get("http://localhost:3000/api/v1/account/balance", {
+        axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/account/balance`, {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("token")
             }

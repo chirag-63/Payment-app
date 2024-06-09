@@ -5,7 +5,7 @@ export function Appbar() {
     const [firstName, setFirstName] = useState("");
 
     useEffect(() => {
-        axios.get("http://localhost:3000/api/v1/user/userinfo", {
+        axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/userinfo`, {
             headers: {
                 Authorization: "Bearer "+localStorage.getItem("token")
             }

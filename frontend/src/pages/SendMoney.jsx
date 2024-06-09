@@ -52,15 +52,21 @@ export default function SendMoney() {
                                         onKeyDown={handleKeyDown}
                                     />
                                 </div>
-                                <button onClick={()=>{
-                                    axios.post("http://localhost:3000/api/v1/account/transfer", {
-                                        to: id,
-                                        amount
-                                    }, {
-                                        headers: {
-                                            Authorization: "Bearer "+localStorage.getItem("token")
+                                <button onClick={() => {
+                                    axios.post(
+                                        `${
+                                            import.meta.env.VITE_BACKEND_URL
+                                        }/api/v1/account/transfer`, 
+                                        {
+                                            to: id,
+                                            amount
+                                        }, 
+                                        {
+                                            headers: {
+                                                Authorization: "Bearer " + localStorage.getItem("token")
+                                            }
                                         }
-                                    })
+                                    )
                                     Navigate("/done")
                                 }} className="justify-center rounded-md text-base font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white active:bg-green-700 select-none">
                                     Initiate Transfer
