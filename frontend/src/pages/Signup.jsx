@@ -67,7 +67,7 @@ export default function Signup() {
                     </div>
                 </div>
 
-                <BottomWarning text={"Already have account? "} link={"Signin"} to={"/signin"} />
+                <BottomWarning text={"Already have account? "} link={"Signin"} to={"/"} />
             </div>
         </div>
     )
