@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 export function Appbar() {
     const [firstName, setFirstName] = useState("");
+    const Navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/userinfo`, {
@@ -16,7 +18,7 @@ export function Appbar() {
 
     return (
         <div className="flex justify-between bg-white h-16 items-center border-[2px]">
-            <div className="pl-6 text-2xl font-bold select-none">
+            <div onClick={()=>{Navigate("/dashboard")}} className="pl-6 text-2xl font-bold select-none hover:cursor-pointer">
                 Payments App
             </div>
             <div className="flex items-center pr-6 text-md font-medium ">

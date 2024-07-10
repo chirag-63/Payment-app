@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import axios from "axios";
 import loader from "../assets/dot-loader.gif"
 
@@ -10,18 +10,17 @@ export function Balance() {
 
     const fetchBalance = () => {
         setLoading(true);
-        setShowText(false); // Hide the text after clicking
-        setShowLoader(true); // Show loader
+        setShowText(false);
+        setShowLoader(true);
         axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/account/balance`, {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("token")
             }
         }).then((response) => {
-            // Simulate loader delay of 2 seconds
             setTimeout(() => {
                 setBalance(response.data.balance);
                 setLoading(false);
-                setShowLoader(false); // Hide loader after 2 seconds
+                setShowLoader(false);
             }, 1200);
         })
     }

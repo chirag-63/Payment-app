@@ -19,6 +19,24 @@ export default function SendMoney() {
         }
     };
 
+    const handleTransfer = async () => {
+        try{
+            const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/account/transfer`,
+                {to: id, amount}, 
+                {
+                    headers: {Authorization: "Bearer " + localStorage.getItem("token")}
+                }
+            )
+            if(res.data.message == "Transfer successful"){
+                Navigate("/done");
+            } else {
+                Navigate("/failed");
+            }
+        } catch (err) {
+            Navigate("/failed");
+        }
+    }
+
     return (
         <div className="bg-gray-100 h-screen">
             <Appbar />
@@ -52,23 +70,7 @@ export default function SendMoney() {
                                         onKeyDown={handleKeyDown}
                                     />
                                 </div>
-                                <button onClick={() => {
-                                    axios.post(
-                                        `${
-                                            import.meta.env.VITE_BACKEND_URL
-                                        }/api/v1/account/transfer`, 
-                                        {
-                                            to: id,
-                                            amount
-                                        }, 
-                                        {
-                                            headers: {
-                                                Authorization: "Bearer " + localStorage.getItem("token")
-                                            }
-                                        }
-                                    )
-                                    Navigate("/done")
-                                }} className="justify-center rounded-md text-base font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white active:bg-green-700 select-none">
+                                <button onClick={handleTransfer} className="justify-center rounded-md text-base font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white active:bg-green-700 select-none">
                                     Initiate Transfer
                                 </button>
                             </div>

@@ -6,6 +6,7 @@ import Signin from "./pages/Signin";
 import Dashboard from "./pages/Dashboard";
 import SendMoney from "./pages/SendMoney";
 import Successful from "./pages/Succesful";
+import Failed from "./pages/failed";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/send" element={<SendMoney />} />
         <Route path="/done" element={<Successful/>} />
+        <Route path="/failed" element={<Failed/>} />
       </Routes>
     </BrowserRouter>
   )

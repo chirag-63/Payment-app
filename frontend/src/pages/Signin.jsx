@@ -26,7 +26,7 @@ export default function Signin() {
             if (err.response.data.message == "Invalid username or password") {
                 setError(err.response.data.message + ", try again later")
             }
-            else if(err.response.data.message="Invalid inputs"){
+            else if(err.response.data.message == "Invalid inputs"){
                 setError("Please enter required credentials")
             }
         }
